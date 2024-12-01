@@ -13,7 +13,7 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 });
 
-export default [...compat.extends("eslint:recommended"), {
+export default [...compat.extends("eslint:recommended", "prettier"), {
     languageOptions: {
         globals: {
             ...globals.node,
