@@ -10,49 +10,59 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
 });
 
-export default [{
+export default [
+  {
     ignores: ["**/dist"],
-}, ...compat.extends("eslint:recommended", "prettier"), {
+  },
+  ...compat.extends("eslint:recommended", "prettier"),
+  {
     languageOptions: {
-        globals: {
-            ...globals.node,
-        },
+      globals: {
+        ...globals.node,
+      },
     },
-}, ...compat.extends("plugin:jest/recommended").map(config => ({
+  },
+  ...compat.extends("plugin:jest/recommended").map((config) => ({
     ...config,
     files: ["**/*.test.js"],
-})), {
+  })),
+  {
     files: ["**/*.test.js"],
 
     plugins: {
-        jest,
+      jest,
     },
-}, ...compat.extends(
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-).map(config => ({
-    ...config,
-    files: ["**/*.ts"],
-})), {
+  },
+  ...compat
+    .extends(
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    )
+    .map((config) => ({
+      ...config,
+      files: ["**/*.ts"],
+    })),
+  {
     files: ["**/*.ts"],
 
     plugins: {
-        "@typescript-eslint": typescriptEslint,
+      "@typescript-eslint": typescriptEslint,
     },
 
     languageOptions: {
-        parser: tsParser,
-        ecmaVersion: 5,
-        sourceType: "script",
+      parser: tsParser,
+      ecmaVersion: 5,
+      sourceType: "script",
 
-        parserOptions: {
-            project: true,
-            tsconfigRootDir: "/Users/kamil/Projects/adventofcode2024",
-        },
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: "/Users/kamil/Projects/adventofcode2024",
+      },
     },
-}];
+  },
+];
