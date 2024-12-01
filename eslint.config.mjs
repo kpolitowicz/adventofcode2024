@@ -1,4 +1,5 @@
 import globals from "globals";
+import jest from "eslint-plugin-jest";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
@@ -17,5 +18,14 @@ export default [...compat.extends("eslint:recommended"), {
         globals: {
             ...globals.node,
         },
+    },
+}, ...compat.extends("plugin:jest/recommended").map(config => ({
+    ...config,
+    files: ["**/*.test.js"],
+})), {
+    files: ["**/*.test.js"],
+
+    plugins: {
+        jest,
     },
 }];
