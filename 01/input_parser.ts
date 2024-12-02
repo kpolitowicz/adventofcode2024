@@ -1,16 +1,23 @@
-export class Command {
-  cmd: string;
-  x: number;
-
-  constructor(cmd: string, x: number) {
-    this.cmd = cmd;
-    this.x = x;
-  }
-}
+export type InputLists = {
+  leftList: number[];
+  rightList: number[];
+};
 
 export class InputParser {
-  parse(input: string): string[] {
-    return this.lines(input);
+  parse(input: string): InputLists {
+    const parsedInput = {
+      leftList: [],
+      rightList: [],
+    } as InputLists;
+
+    const ll = this.lines(input);
+    ll.forEach((v: string) => {
+      const nums = v.split("   ");
+      parsedInput.leftList.push(parseInt(nums[0]));
+      parsedInput.rightList.push(parseInt(nums[1]));
+    });
+
+    return parsedInput;
   }
 
   // Read the input file's string, split along the lines, remove the last (empty) line

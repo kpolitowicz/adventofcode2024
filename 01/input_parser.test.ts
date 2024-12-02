@@ -1,14 +1,18 @@
 import { InputParser } from "./input_parser";
 
-test("Parses input into strings", () => {
-  const input = `00100
-11110
-10110
-10111
+describe("inputParser.parse()", () => {
+  it("parses input into left and right arrays", () => {
+    const input = `3   4
+4   3
+2   5
+1   3
+3   9
+3   3
 `;
-  const parser = new InputParser();
-  const lines = parser.lines(input);
+    const parser = new InputParser();
+    const parsedInput = parser.parse(input);
 
-  expect(lines.length).toBe(4);
-  expect(lines[lines.length - 1]).toBe("10111");
+    expect(parsedInput.leftList).toEqual([3, 4, 2, 1, 3, 3]);
+    expect(parsedInput.rightList).toEqual([4, 3, 5, 3, 9, 3]);
+  });
 });
