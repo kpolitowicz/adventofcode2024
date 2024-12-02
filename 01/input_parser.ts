@@ -11,7 +11,7 @@ export class InputParser {
     } as InputLists;
 
     const ll = this.lines(input);
-    ll.forEach((v: string) => {
+    ll.forEach((v) => {
       const nums = v.split("   ");
       parsedInput.leftList.push(parseInt(nums[0]));
       parsedInput.rightList.push(parseInt(nums[1]));

@@ -15,3 +15,18 @@ export function calculateDistances(input: InputLists): number[] {
 
   return toReturn;
 }
+
+export function calculateSimilarities(input: InputLists): number[] {
+  const rightFreq = numFreq(input.rightList);
+
+  return input.leftList.reduce((res, v) => {
+    res.push(v * (rightFreq.get(v) || 0));
+    return res;
+  }, new Array<number>());
+}
+
+function numFreq(list: number[]): Map<number, number> {
+  return list.reduce((res, v) => {
+    return res.set(v, (res.get(v) || 0) + 1);
+  }, new Map<number, number>());
+}
