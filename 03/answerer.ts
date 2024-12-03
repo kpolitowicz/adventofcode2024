@@ -1,5 +1,5 @@
 import { InputParser } from "./input_parser";
-import { addUpMuls } from "./memory_checker";
+import { addUpMuls, addUpMulsWithCond } from "./memory_checker";
 
 export function firstAnswer(input: string): number {
   const parsedInput = new InputParser().parse(input);
@@ -7,5 +7,6 @@ export function firstAnswer(input: string): number {
 }
 
 export function secondAnswer(input: string): number {
-  return 0;
+  const parsedInput = new InputParser().parse(input);
+  return addUpMulsWithCond(parsedInput);
 }
