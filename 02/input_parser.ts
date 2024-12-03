@@ -1,9 +1,7 @@
 export class InputParser {
   parse(input: string): number[][] {
     return this.lines(input).map((line) => {
-      return line.split(" ").map((n) => {
-        return parseInt(n) || 0;
-      });
+      return line.split(" ").map((n) => parseInt(n) || 0);
     });
   }
 
