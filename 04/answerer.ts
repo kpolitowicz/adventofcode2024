@@ -10,6 +10,8 @@ export function firstAnswer(input: string): number {
 }
 
 export function secondAnswer(input: string): number {
-  const parsedInput = new InputParser().parse(input);
-  return 0;
+  const gridInput = new InputParser().parse(input);
+  const grid = new Grid(gridInput);
+
+  return grid.countMas();
 }

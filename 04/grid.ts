@@ -6,17 +6,23 @@ export class Grid {
   }
 
   findXmas(): number[][] {
-    return this.findXses()
+    return this.findLetter("X")
       .map((coord) => [...coord, this.countXmas(coord)])
       .filter((coord) => coord[2] > 0);
   }
 
-  findXses(): number[][] {
+  countMas(): number {
+    const coords = this.findLetter("A");
+
+    return coords.filter((coord) => this.isMasX(coord)).length;
+  }
+
+  findLetter(letter: string): number[][] {
     const coords: number[][] = [];
 
     for (let i = 0; i < this.gridHeight(); i++) {
       for (let j = 0; j < this.gridWidth(); j++) {
-        if (this.at(i, j) == "X") {
+        if (this.at(i, j) == letter) {
           coords.push([i, j]);
         }
       }
@@ -52,6 +58,26 @@ export class Grid {
       this.at(coord[0] + dir[0], coord[1] + dir[1]) == "M" &&
       this.at(coord[0] + 2 * dir[0], coord[1] + 2 * dir[1]) == "A" &&
       this.at(coord[0] + 3 * dir[0], coord[1] + 3 * dir[1]) == "S"
+    );
+  }
+
+  isMasX(coord: number[]): boolean {
+    return this.isMasPosDiag(coord) && this.isMasNegDiag(coord);
+  }
+
+  isMasPosDiag(coord: number[]): boolean {
+    const [x, y] = coord;
+    return (
+      (this.at(x - 1, y - 1) == "M" && this.at(x + 1, y + 1) == "S") ||
+      (this.at(x - 1, y - 1) == "S" && this.at(x + 1, y + 1) == "M")
+    );
+  }
+
+  isMasNegDiag(coord: number[]): boolean {
+    const [x, y] = coord;
+    return (
+      (this.at(x - 1, y + 1) == "M" && this.at(x + 1, y - 1) == "S") ||
+      (this.at(x - 1, y + 1) == "S" && this.at(x + 1, y - 1) == "M")
     );
   }
 
