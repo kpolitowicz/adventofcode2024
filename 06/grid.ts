@@ -5,6 +5,7 @@ type Pos = {
 
 export class Grid {
   grid: string[][];
+  startingPos: Pos;
   currentPos: Pos;
   currentDir: Pos;
 
@@ -21,16 +22,33 @@ export class Grid {
       }
     }
 
+    this.startingPos = { r: this.currentPos.r, c: this.currentPos.c };
     this.currentDir = { r: -1, c: 0 };
   }
 
   simulateStepsUntilOut() {
     let step = 0;
-    while (!this.isGuardOut() && step < 10000) {
+    while (!this.shouldStop(step)) {
       step++;
       this.stepUntilObstacleOrEdge();
       this.turnRight();
     }
+  }
+
+  shouldStop(step: number): boolean {
+    if (this.isGuardOut()) {
+      // console.log(`Guard is out at step ${step}`);
+      return true;
+    }
+    if (this.isStartingPosAndDir() && step > 0) {
+      // console.log(`Loop detected at step ${step}`);
+      return true;
+    }
+    if (step >= 1000) {
+      // console.log("Too many steps, stopping!");
+      return true;
+    }
+    return false;
   }
 
   countVisited(): number {
@@ -42,6 +60,22 @@ export class Grid {
         }
       }
     }
+    return cnt;
+  }
+
+  countLoopPositions(): number {
+    let cnt = 0;
+
+    for (let i = 0; i < this.height(); i++) {
+      for (let j = 0; j < this.width(); j++) {
+        if (this.at(i, j) == ".") {
+          if (this.loopWithObstacleAt(i, j)) {
+            cnt += 1;
+          }
+        }
+      }
+    }
+
     return cnt;
   }
 
@@ -95,6 +129,29 @@ export class Grid {
     } else if (this.currentDir.r === 0 && this.currentDir.c === -1) {
       this.currentDir = { r: -1, c: 0 };
     }
+  }
+
+  isStartingPosAndDir(): boolean {
+    return (
+      this.currentPos.r == this.startingPos.r &&
+      this.currentPos.c == this.startingPos.c &&
+      this.currentDir.r == -1 &&
+      this.currentDir.c == 0
+    );
+  }
+
+  loopWithObstacleAt(r: number, c: number): boolean {
+    const grid = this.cloneWithObstacleAt(r, c);
+    grid.simulateStepsUntilOut();
+
+    return !grid.isGuardOut();
+  }
+
+  cloneWithObstacleAt(r: number, c: number): Grid {
+    const dupGrid = this.getGrid().map((line) => [...line]);
+    dupGrid[r][c] = "#";
+
+    return new Grid(dupGrid);
   }
 
   height(): number {

@@ -13,5 +13,5 @@ export function secondAnswer(input: string): number {
   const gridInput = new InputParser().parse(input);
   const grid = new Grid(gridInput);
 
-  return 0;
+  return grid.countLoopPositions();
 }

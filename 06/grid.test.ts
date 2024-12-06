@@ -17,6 +17,23 @@ describe("Grid.simulateStepsUntilOut()", () => {
     grid.simulateStepsUntilOut();
     expect(grid.isGuardOut()).toBe(true);
   });
+
+  it("stop simulation when loop is detected", () => {
+    const grid = new Grid([
+      [".", ".", ".", ".", "#", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", "#", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", "#", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", "#", ".", "#", "^", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", "#", "."],
+      ["#", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", "#", ".", ".", "."],
+    ]);
+    grid.simulateStepsUntilOut();
+    expect(grid.isGuardOut()).toBe(false);
+  });
 });
 
 describe("Grid.countVisited()", () => {
@@ -35,6 +52,24 @@ describe("Grid.countVisited()", () => {
     ]);
     grid.simulateStepsUntilOut();
     expect(grid.countVisited()).toBe(41);
+  });
+});
+
+describe("Grid.countLoopPositions()", () => {
+  it("should count position where added obstacle causes loop", () => {
+    const grid = new Grid([
+      [".", ".", ".", ".", "#", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", "#", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", "#", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", "#", ".", ".", "^", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", "#", "."],
+      ["#", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", "#", ".", ".", "."],
+    ]);
+    expect(grid.countLoopPositions()).toBe(6);
   });
 });
 
@@ -114,5 +149,16 @@ describe("Grid.turnRight()", () => {
 
     // the guard went east, not north
     expect(grid.isGuardOut()).toBe(true);
+  });
+});
+
+describe("Grid.isStartingPosAndDir()", () => {
+  it("returns true at the start, but not after", () => {
+    const grid = new Grid([["."], ["^"]]);
+
+    expect(grid.isStartingPosAndDir()).toBe(true);
+
+    grid.takeStep();
+    expect(grid.isStartingPosAndDir()).toBe(false);
   });
 });

@@ -21,19 +21,19 @@ describe("Answer 1", () => {
 
 describe("Answer 2", () => {
   it("matches the example answer", () => {
-    const input = `MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM
-XXAMMXXAMA
-SMSMSASXSS
-SAXAMASAAA
-MAMMMXMMMM
-MXMXAXMASX
+    const input = `....#.....
+.........#
+..........
+..#.......
+.......#..
+..........
+.#..^.....
+........#.
+#.........
+......#...
 `;
 
     const actual = secondAnswer(input);
-    expect(actual).toBe(0);
+    expect(actual).toBe(6);
   });
 });
