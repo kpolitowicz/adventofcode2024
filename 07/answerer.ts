@@ -12,8 +12,11 @@ export function firstAnswer(input: string): number {
 }
 
 export function secondAnswer(input: string): number {
-  const gridInput = new InputParser().parse(input);
-  // const grid = new Grid(gridInput);
+  const eqInput = new InputParser().parse(input);
+  const equations = new Equations(eqInput);
 
-  return 0;
+  return equations
+    .filterWorkingWithConcat()
+    .map((equation) => equation.getResult())
+    .reduce((sum, num) => sum + num, 0);
 }

@@ -14,6 +14,15 @@ export class Equation {
     });
   }
 
+  isWorkingWithConcat(): boolean {
+    const permutations = this.opPermutationsWithConcat(
+      this.components.length - 1,
+    );
+    return permutations.some((perm) => {
+      return this.calculate(this.components, perm) == this.result;
+    });
+  }
+
   opPermutations(l: number): string[][] {
     const perms: string[][] = [];
     for (let i = 0; i < 2 ** l; i++) {
@@ -23,6 +32,20 @@ export class Equation {
           .padStart(l, "0")
           .split("")
           .map((sym) => (sym == "0" ? "+" : "*")),
+      );
+    }
+    return perms;
+  }
+
+  opPermutationsWithConcat(l: number): string[][] {
+    const perms: string[][] = [];
+    for (let i = 0; i < 3 ** l; i++) {
+      perms.push(
+        i
+          .toString(3)
+          .padStart(l, "0")
+          .split("")
+          .map((sym) => (sym == "0" ? "+" : sym == "1" ? "*" : "||")),
       );
     }
     return perms;
@@ -41,8 +64,10 @@ export class Equation {
   applyOp(op: string, num1: number, num2: number): number {
     if (op == "+") {
       return num1 + num2;
-    } else {
+    } else if (op == "*") {
       return num1 * num2;
+    } else {
+      return parseInt(`${num1}${num2}`) || 0;
     }
   }
 
@@ -60,5 +85,9 @@ export class Equations {
 
   filterWorking(): Equation[] {
     return this.equations.filter((eq) => eq.isWorking());
+  }
+
+  filterWorkingWithConcat(): Equation[] {
+    return this.equations.filter((eq) => eq.isWorkingWithConcat());
   }
 }
