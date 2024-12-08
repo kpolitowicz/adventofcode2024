@@ -16,7 +16,13 @@ export function firstAnswer(input: string): number {
 export function secondAnswer(input: string): number {
   const gridInput = new InputParser().parse(input);
 
-  return 0;
+  const townMap = new AntennaMap(gridInput);
+  const antinodes = new AntinodeFinder(townMap).findAntinodesWithResonance();
+
+  let list: Coord[] = [];
+  antinodes.forEach((v, k) => (list = [...list, ...v]));
+
+  return unique(list).length;
 }
 
 // https://stackoverflow.com/questions/47840061/how-to-remove-duplicates-from-a-typescript-array
