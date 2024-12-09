@@ -1,6 +1,6 @@
 import { Compacter, sumPos } from "./compacter";
 
-describe("compactDisk()", () => {
+describe("Compacter.compactDisk()", () => {
   it("defragments the disk", () => {
     const diskMap = [2, 3, 3, 3, 1, 3, 3, 1, 2, 1, 4, 1, 4, 1, 3, 1, 4, 0, 2];
     const compacter = new Compacter(diskMap);
@@ -17,6 +17,18 @@ describe("compactDisk()", () => {
     compacter.compactDisk();
     expect(compacter.getBlocks()).toEqual([
       0, 2, 2, 1, 1, 1, 2, 2, 2, -1, -1, -1, -1, -1, -1,
+    ]);
+  });
+});
+
+describe("Compacter.compactDiskWholeFiles()", () => {
+  it("defragments the disk", () => {
+    const diskMap = [2, 3, 3, 3, 1, 3, 3, 1, 2, 1, 4, 1, 4, 1, 3, 1, 4, 0, 2];
+    const compacter = new Compacter(diskMap);
+    compacter.compactDiskWholeFiles2();
+    expect(compacter.getLinkedBlocks()).toEqual([
+      0, 0, 9, 9, 2, 1, 1, 1, 7, 7, 7, -1, 4, 4, -1, 3, 3, 3, -1, -1, -1, -1, 5,
+      5, 5, 5, -1, 6, 6, 6, 6, -1, -1, -1, -1, -1, 8, 8, 8, 8, -1, -1,
     ]);
   });
 });

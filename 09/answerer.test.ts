@@ -16,6 +16,6 @@ describe("Answer 2", () => {
 `;
 
     const actual = secondAnswer(input);
-    expect(actual).toBe(0);
+    expect(actual).toBe(2858);
   });
 });
