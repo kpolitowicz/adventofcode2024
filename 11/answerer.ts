@@ -1,4 +1,4 @@
-import { blinkTimes } from "./blinker";
+import { blinkTimes, blinkLen } from "./blinker";
 import { InputParser } from "./input_parser";
 
 export function firstAnswer(input: string): number {
@@ -11,5 +11,7 @@ export function firstAnswer(input: string): number {
 export function secondAnswer(input: string): number {
   const startingStones = new InputParser().parse(input);
 
-  return 0;
+  return startingStones.reduce((sum, stone) => {
+    return sum + blinkLen(stone, 75);
+  }, 0);
 }
