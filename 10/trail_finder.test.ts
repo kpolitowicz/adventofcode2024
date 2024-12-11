@@ -3,7 +3,9 @@ import {
   Coord,
   findTrailheads,
   findTrails,
+  findTrailRatings,
   findUniquePeaks,
+  findTrailRating,
 } from "./trail_finder";
 
 const grid = new Grid([
@@ -23,6 +25,15 @@ describe("findTrails()", () => {
     const numPeaks = new Array<number>();
     trails.forEach((peaks) => numPeaks.push(peaks.length));
     expect(numPeaks).toEqual([5, 6, 5, 3, 1, 3, 5, 3, 5]);
+  });
+});
+
+describe("findTrailRatings()", () => {
+  it("return map of all trailheads with all reachable peaks", () => {
+    const ratings = findTrailRatings(grid);
+    const res = new Array<number>();
+    ratings.forEach((rating) => res.push(rating));
+    expect(res).toEqual([20, 24, 10, 4, 1, 4, 5, 8, 5]);
   });
 });
 
@@ -57,5 +68,11 @@ describe("findUniquePeaks()", () => {
       new Coord(4, 5),
       new Coord(3, 4),
     ]);
+  });
+});
+
+describe("findTrailRating()", () => {
+  it("return list of all reachable peaks", () => {
+    expect(findTrailRating(grid, new Coord(4, 6))).toEqual(4);
   });
 });

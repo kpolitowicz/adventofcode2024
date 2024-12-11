@@ -14,6 +14,13 @@ export function findTrails(grid: Grid): Map<Coord, Coord[]> {
   }, new Map<Coord, Coord[]>());
 }
 
+export function findTrailRatings(grid: Grid): Map<Coord, number> {
+  return findTrailheads(grid).reduce((ratings, trailhead) => {
+    ratings.set(trailhead, findTrailRating(grid, trailhead));
+    return ratings;
+  }, new Map<Coord, number>());
+}
+
 export function findTrailheads(grid: Grid): Coord[] {
   const res = [];
   for (let r = 0; r < grid.height(); r++) {
@@ -27,6 +34,14 @@ export function findTrailheads(grid: Grid): Coord[] {
 }
 
 export function findUniquePeaks(grid: Grid, start: Coord): Coord[] {
+  return unique(findPeaks(grid, start));
+}
+
+export function findTrailRating(grid: Grid, start: Coord): number {
+  return findPeaks(grid, start).length;
+}
+
+export function findPeaks(grid: Grid, start: Coord): Coord[] {
   const currAlt = grid.at(start.row, start.col);
   // console.log(`(${start.row},${start.col}): ${currAlt}`);
   if (currAlt === 9) {
@@ -45,11 +60,11 @@ export function findUniquePeaks(grid: Grid, start: Coord): Coord[] {
     const nextCoord = new Coord(start.row + dir.row, start.col + dir.col);
     const nextAlt = grid.at(nextCoord.row, nextCoord.col);
     if (nextAlt === currAlt + 1) {
-      res.push(...findUniquePeaks(grid, nextCoord));
+      res.push(...findPeaks(grid, nextCoord));
     }
   });
 
-  return unique(res);
+  return res;
 }
 
 // https://stackoverflow.com/questions/47840061/how-to-remove-duplicates-from-a-typescript-array
